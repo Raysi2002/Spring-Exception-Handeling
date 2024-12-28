@@ -36,7 +36,7 @@ public class DeveloperServiceImplementation implements DeveloperService{
 
     @Override
     public Developer getDeveloper(Long id) {
-        return null;
+        return developerRepository.findById(id).orElseThrow(BussinessException :: new);
     }
 
     @Override

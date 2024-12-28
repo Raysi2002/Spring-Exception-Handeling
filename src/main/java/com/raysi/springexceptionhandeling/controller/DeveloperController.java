@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,14 +25,16 @@ public class DeveloperController {
 
     @GetMapping("/api/dev")
     public ResponseEntity<List<Developer>> fetchAllData(){
-        try{
-            List<Developer> devs =  developerService.getDevelopers();
-            if (devs.isEmpty()){
-                throw new BussinessException("701", "No data available");
-            }
-            return new ResponseEntity<>(devs, HttpStatus.OK);
-        }catch (Exception e){
-            throw new ControllerException("801", "Something went wrong in controller level");
+        List<Developer> developers = developerService.getDevelopers();
+        if(developers.isEmpty()){
+            throw new BussinessException("701", "No data availabe");
         }
+        return new ResponseEntity<>(developers, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/dev/{id}")
+    public ResponseEntity<Developer> fetchDeveloperById(@PathVariable Long id){
+        Developer developer = developerService.getDeveloper(id);
+        if (developer.)
     }
 }
