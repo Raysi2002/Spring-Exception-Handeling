@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class DeveloperController {
@@ -34,7 +35,11 @@ public class DeveloperController {
 
     @GetMapping("/api/dev/{id}")
     public ResponseEntity<Developer> fetchDeveloperById(@PathVariable Long id){
-        Developer developer = developerService.getDeveloper(id);
-        if (developer.)
+        Optional<Developer> developer = developerService.getDeveloper(id);
+        if(developer.isEmpty()){
+//            return new  ResponseEntity(developer, HttpStatus.BAD_REQUEST);
+            throw new BussinessException("801", "No developer with id : " + id + " is available");
+        }
+        return new  ResponseEntity(developer, HttpStatus.OK);
     }
 }

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DeveloperServiceImplementation implements DeveloperService{
@@ -35,8 +37,9 @@ public class DeveloperServiceImplementation implements DeveloperService{
     }
 
     @Override
-    public Developer getDeveloper(Long id) {
-        return developerRepository.findById(id).orElseThrow(BussinessException :: new);
+    public Optional<Developer> getDeveloper(Long id) {
+        Optional<Developer> developer = developerRepository.findById(id);
+        return  developer;
     }
 
     @Override
