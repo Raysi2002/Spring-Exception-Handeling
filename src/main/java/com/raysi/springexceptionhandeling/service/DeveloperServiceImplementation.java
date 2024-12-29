@@ -26,14 +26,15 @@ public class DeveloperServiceImplementation implements DeveloperService{
 
     @Override
     public List<Developer> getDevelopers() {
+
+        List<Developer> developers = developerRepository.findAll();
+        if(developers.isEmpty()){
+            throw new BussinessException("701", "No data available");
+        }
         try{
-            List<Developer> developers = developerRepository.findAll();
-            if(developers.isEmpty()){
-                throw new BussinessException("701", "No data available");
-            }
             return developers;
         }catch (Exception e){
-            throw new BussinessException("702", "Something went wrong");
+            throw new BussinessException("702", "Something went wrong in Service Layer");
         }
     }
 
