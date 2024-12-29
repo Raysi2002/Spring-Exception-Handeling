@@ -51,7 +51,14 @@ public class DeveloperServiceImplementation implements DeveloperService{
 
     @Override
     public void saveDeveloper(Developer developer) {
-
+        if (developer.getName().equalsIgnoreCase("")){
+            throw new BussinessException("1001", "The data can't be empty");
+        }
+        try {
+            developerRepository.save(developer);
+        }catch (Exception e){
+            throw new BussinessException("1001", "Something went wrong in service layer");
+        }
     }
 
     @Override
