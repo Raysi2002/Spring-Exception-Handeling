@@ -2,7 +2,7 @@ package com.raysi.springexceptionhandeling.controller;
 
 import com.raysi.springexceptionhandeling.enitity.Developer;
 import com.raysi.springexceptionhandeling.exception.BussinessException;
-import com.raysi.springexceptionhandeling.exception.ControllerException;
+import com.raysi.springexceptionhandeling.exception.ResourcesNotFoundException;
 import com.raysi.springexceptionhandeling.service.DeveloperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class DeveloperController {
@@ -35,11 +34,12 @@ public class DeveloperController {
 
     @GetMapping("/api/dev/{id}")
     public ResponseEntity<Developer> fetchDeveloperById(@PathVariable Long id){
-        Optional<Developer> developer = developerService.getDeveloper(id);
-        if(developer.isEmpty()){
-//            return new  ResponseEntity(developer, HttpStatus.BAD_REQUEST);
-            throw new BussinessException("801", "No developer with id : " + id + " is available");
-        }
-        return new  ResponseEntity(developer, HttpStatus.OK);
+        Developer developer = developerService.getDeveloper(id)
+                .orElseThrow(() -> new ResourcesNotFoundException("901", "Resource Not Found"));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("901", "Dev Not Found")
+                .body(developer);
+
     }
 }

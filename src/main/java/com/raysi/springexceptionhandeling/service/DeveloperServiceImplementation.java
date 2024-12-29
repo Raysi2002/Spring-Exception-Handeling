@@ -3,6 +3,7 @@ package com.raysi.springexceptionhandeling.service;
 import com.raysi.springexceptionhandeling.enitity.Developer;
 import com.raysi.springexceptionhandeling.exception.BussinessException;
 import com.raysi.springexceptionhandeling.exception.ControllerException;
+import com.raysi.springexceptionhandeling.exception.ResourcesNotFoundException;
 import com.raysi.springexceptionhandeling.repository.DeveloperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,14 @@ public class DeveloperServiceImplementation implements DeveloperService{
 
     @Override
     public Optional<Developer> getDeveloper(Long id) {
-        Optional<Developer> developer = developerRepository.findById(id);
-        return  developer;
+        try{
+            return developerRepository.findById(id);
+        }catch (ResourcesNotFoundException e){
+            throw new ResourcesNotFoundException("701", "The developer with id : " + id + " doesn't exists");
+        }catch (Exception e){
+            System.out.println("Some error occurred in Service Layer, Please Try Again !");
+        }
+        return Optional.empty();
     }
 
     @Override

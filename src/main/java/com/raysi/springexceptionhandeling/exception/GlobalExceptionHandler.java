@@ -13,4 +13,10 @@ public class GlobalExceptionHandler extends RuntimeException {
         ErrorDetail errorDetails = new ErrorDetail(bussinessException.getErrorCode(), bussinessException.getErrorMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ResourcesNotFoundException.class)
+    public ResponseEntity<ErrorDetail> resourcesNotFoundException(ResourcesNotFoundException resourcesNotFoundException){
+        ErrorDetail errorDetail = new ErrorDetail(resourcesNotFoundException.getErrorCode(), resourcesNotFoundException.getErrorMessage());
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
 }
